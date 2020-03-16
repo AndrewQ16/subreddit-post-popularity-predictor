@@ -5,15 +5,16 @@ import cv2
 import random
 import pickle
 
-translate = {"cane": "dog", "cavallo": "horse", "elefante": "elephant", "farfalla": "butterfly", 
-    "gallina": "chicken", "gatto": "cat", "mucca": "cow", "pecora": "sheep", 
-    "scoiattolo": "squirrel", "dog": "cane", "cavallo": "horse", "elephant" : "elefante", 
-    "butterfly": "farfalla", "chicken": "gallina", "cat": "gatto", "cow": "mucca", "spider": "ragno", 
-    "squirrel": "scoiattolo"}
+# translate = {"cane": "dog", "cavallo": "horse", "elefante": "elephant", "farfalla": "butterfly", 
+#     "gallina": "chicken", "gatto": "cat", "mucca": "cow", "pecora": "sheep", 
+#     "scoiattolo": "squirrel", "dog": "cane", "cavallo": "horse", "elephant" : "elefante", 
+#     "butterfly": "farfalla", "chicken": "gallina", "cat": "gatto", "cow": "mucca", "spider": "ragno", 
+#     "squirrel": "scoiattolo"}
 
 
-#The size that images get set to:
-IMG_SIZE = 50
+#The size that images get set to. That means any images passed to the model must be of the same size
+#or changed to this IMG_SIZE x IMG_SIZE
+IMG_SIZE = 70
 
 datadir = "animalsEN"
 
@@ -21,18 +22,24 @@ categories = ["dog", "horse", "elephant", "butterfly", "chicken", "cat",
 "cow", "sheep", "spider", "squirrel"]
 
 training_data = []
+#print(os.path.abspath(os.curdir))
+#print("----------")
+os.chdir("../data")
+
 
 def create_training_data():
     #Go through each folder
     for category in categories:
     #Gets us in the path for any of the folders for categories
+    
         path = os.path.join(datadir, category)
+        print(path)
         class_num = categories.index(category)
-
         #Iterate thru images
         #count = 0
-        #print("File count for: " + category, end = '')
+        print("Current category:" + category)
         for img in os.listdir(path):
+
             #convert images with imread
             #convert images to gray scale b/c rgb data is 3x the size of grayscale, and don't need color differentiation
             #for classifying different animals, in this case, maybe for reptiles,etc
@@ -83,8 +90,3 @@ pickle_out.close()
 pickle_in = open("X.pickle", "rb")
 
 X = pickle.load(pickle_in)
-
-print(X[1])
-
-
-
