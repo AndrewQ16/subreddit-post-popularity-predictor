@@ -18,13 +18,14 @@ IMG_SIZE = 70
 
 datadir = "animalsEN"
 
-categories = ["dog", "horse", "elephant", "butterfly", "chicken", "cat", 
-"cow", "sheep", "spider", "squirrel"]
+# categories = ["dog", "horse", "elephant", "butterfly", "chicken", "cat", 
+# "cow", "sheep", "spider", "squirrel"]
+
+categories = ["dog", "horse", "elephant", "cat", "squirrel"]
 
 training_data = []
-#print(os.path.abspath(os.curdir))
-#print("----------")
-os.chdir("../data")
+
+os.chdir("data")
 
 
 def create_training_data():

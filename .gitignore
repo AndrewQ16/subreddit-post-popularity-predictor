@@ -20,6 +20,7 @@
 *.tar
 *.zip
 *.vscode
+*.pickle
 
 # Logs and databases #
 ######################
