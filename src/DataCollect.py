@@ -7,16 +7,17 @@ import praw
 import re
 import csv
 import datetime
+import emoji
 
 '''
-Grab the top 30 new posts in r/aww
+Grab the top 1000 new posts in r/aww
 '''
 def grabRedditPosts():
     reddit = praw.Reddit(client_id= 'SEo8q0S8iGyYpw',
                          client_secret='xDvwrr2KS5oZoo51BdJCMUdFg2I',
                          user_agent='aww_data_scrape')
 
-    posts = reddit.subreddit('aww').new(limit=200)
+    posts = reddit.subreddit('aww').new(limit=1000)
 
     # print("Printing new post links:")
     # for post in posts:
@@ -28,24 +29,31 @@ def grabRedditPosts():
 '''
 Check if newly grabbed posts are in the CSV file
 '''
-def comparePosts():
+def addPosts():
     posts = grabRedditPosts()
     rowsToAppend = []
-    #do a scan to see which of the posts aren't in this file yet
+    
 
-    # Check if post link is an image link, gfycat is fine but need to know how to check if it's a picture, same for imgur
-    # imgur can contain gifs, images end in .jpg in the link
+    os.chdir("data")
     for post in posts:
         with open("RedditData.csv", 'r') as csvfile:
+
+            if emoji.emoji_count(post.title) > 0:
+                continue
+
+
             csvreader = csv.reader(csvfile)
-            fields = next(csvreader)
             isInCsv = False
 
+            # Check that we only deal with images
             if "i.redd" not in post.url:
                     continue
 
+            #do a scan to see which of the posts aren't in this file yet
             for row in csvreader:
                 # "2" is the index in which the url is located
+
+
                 if post.url + " " == row[2]:
                     isInCsv = True
                     break         
@@ -53,6 +61,8 @@ def comparePosts():
                 
             if isInCsv == False:   
                 rowsToAppend.append([post.title, post.author ,post.url + ' ', "F", 0, get_date(post)])
+            
+    print("Added in: {} new rows".format(len(rowsToAppend)))
                 
     with open("RedditData.csv", "a") as csvfile:
         csvwriter = csv.writer(csvfile)
@@ -64,12 +74,12 @@ def get_date(submission):
     return datetime.datetime.fromtimestamp(date)
 
 
-
 '''
 Run the script
 '''
 def main():
-    comparePosts()
+    addPosts()
+    
 
 if __name__ == "__main__":
     main()
