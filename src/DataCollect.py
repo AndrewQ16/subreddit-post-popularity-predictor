@@ -17,7 +17,7 @@ def grabRedditPosts():
                          client_secret='xDvwrr2KS5oZoo51BdJCMUdFg2I',
                          user_agent='aww_data_scrape')
 
-    posts = reddit.subreddit('aww').new(limit=1000)
+    posts = reddit.subreddit('aww').new(limit=2000)
 
     # print("Printing new post links:")
     # for post in posts:

@@ -1,9 +1,10 @@
 import os
+import random
+import pickle
 import numpy as np
 import matplotlib.pyplot as plt
 import cv2
-import random
-import pickle
+
 
 # translate = {"cane": "dog", "cavallo": "horse", "elefante": "elephant", "farfalla": "butterfly", 
 #     "gallina": "chicken", "gatto": "cat", "mucca": "cow", "pecora": "sheep", 
@@ -14,7 +15,7 @@ import pickle
 
 #The size that images get set to. That means any images passed to the model must be of the same size
 #or changed to this IMG_SIZE x IMG_SIZE
-IMG_SIZE = 70
+IMG_SIZE = 50
 
 datadir = "animalsEN"
 
@@ -40,16 +41,19 @@ def create_training_data():
         #count = 0
         print("Current category:" + category)
         for img in os.listdir(path):
-
-            #convert images with imread
-            #convert images to gray scale b/c rgb data is 3x the size of grayscale, and don't need color differentiation
-            #for classifying different animals, in this case, maybe for reptiles,etc
-            #count+=1
             try:
+                #convert image to a np array on gray scale, so (size,size, 1) insead of (size,size,3) for RGB
                 img_array = cv2.imread(os.path.join(path, img), cv2.IMREAD_GRAYSCALE)
+                #print(img_array.shape) ====> (sizeX, sizeY). No third column cuz it's just grayscale
+                
+                #Resize an image to the specified IMG_SIZE
                 new_array = cv2.resize(img_array, (IMG_SIZE, IMG_SIZE))
                 training_data.append([new_array, class_num])
+                #print(training_data) ===> prints the list that contains a narray object
+                #print(categories[class_num]) => correctly outputs the value
+                
             except Exception as e:
+                
                 pass
         #print(count)
             #use matplot to show the stuff
@@ -61,7 +65,7 @@ create_training_data()
 
 print("Length of training data: " + str(len(training_data)))
 
-
+#shuffle the data otherwise will be in order: dog, dog... ,cat, cat..... etc
 random.shuffle(training_data)
 
 #for sample in training_data[:10]:
@@ -76,6 +80,7 @@ y = []
 for features, label in training_data:
     X.append(features)
     y.append(label)
+    
  
 #-1 means that is catches all features, 1 is for gray scale
 X = np.array(X).reshape(-1, IMG_SIZE, IMG_SIZE, 1)
