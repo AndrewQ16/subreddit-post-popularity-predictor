@@ -15,19 +15,36 @@ import cv2
 
 #The size that images get set to. That means any images passed to the model must be of the same size
 #or changed to this IMG_SIZE x IMG_SIZE
-IMG_SIZE = 50
+IMG_SIZE = 30
 
 datadir = "animalsEN"
 
 # categories = ["dog", "horse", "elephant", "butterfly", "chicken", "cat", 
 # "cow", "sheep", "spider", "squirrel"]
 
-categories = ["dog", "horse", "elephant", "cat", "squirrel"]
+#categories = ["dog", "horse", "elephant", "cat", "squirrel"]
+
+categories = ["dog", "cat"]
 
 training_data = []
 
 os.chdir("data")
 
+try:
+    f = open("X.pickle")
+    os.remove("X.pickle")
+except IOError:
+    print("X.pickle not found")
+finally:
+    f.close()
+
+try:
+    f = open("y.pickle")
+    os.remove("y.pickle")
+except IOError:
+    print("y.pickle not found")
+finally:
+    f.close()
 
 def create_training_data():
     #Go through each folder
@@ -84,6 +101,7 @@ for features, label in training_data:
  
 #-1 means that is catches all features, 1 is for gray scale
 X = np.array(X).reshape(-1, IMG_SIZE, IMG_SIZE, 1)
+y = np.array(y)
 
 pickle_out = open("X.pickle", "wb")
 pickle.dump(X, pickle_out)
@@ -92,7 +110,3 @@ pickle_out.close()
 pickle_out = open("y.pickle", "wb")
 pickle.dump(y, pickle_out)
 pickle_out.close()
-
-pickle_in = open("X.pickle", "rb")
-
-X = pickle.load(pickle_in)
