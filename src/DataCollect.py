@@ -10,7 +10,7 @@ import datetime
 import emoji
 
 '''
-Grab the top 1000 new posts in r/aww
+Grab the 2000 newest posts in r/aww
 '''
 def grabRedditPosts():
     reddit = praw.Reddit(client_id= 'SEo8q0S8iGyYpw',
@@ -38,6 +38,7 @@ def addPosts():
     for post in posts:
         with open("RedditData.csv", 'r') as csvfile:
 
+            # Skip any posts with an emoji in the title
             if emoji.emoji_count(post.title) > 0:
                 continue
 
