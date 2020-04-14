@@ -9,6 +9,10 @@ import csv
 import datetime
 import emoji
 
+
+# CSV Entry Format: [Title], [Author], [URL], [T/F for if the correct upvote count is included. F by default], [upvote count], [date of post]
+
+
 '''
 Grab the 2000 newest posts in r/aww
 '''
