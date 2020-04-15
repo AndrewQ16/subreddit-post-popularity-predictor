@@ -6,6 +6,7 @@ from tensorflow.keras.layers import Dense, Dropout, Activation, Conv2D, MaxPooli
 #Dense is a final fully connected output layer
 import pickle
 import datetime
+import sys
 
 
 #Use Dropout
@@ -20,8 +21,10 @@ conv_layers =[4]
 #Switch to the data directory
 os.chdir("data")
 
-X = pickle.load(open("X{}.pickle".format(50), "rb"))
-y = pickle.load(open("y{}.pickle".format(50), "rb"))
+IMG_SIZE = int(sys.argv[1])
+
+X = pickle.load(open("X{}.pickle".format(IMG_SIZE), "rb"))
+y = pickle.load(open("y{}.pickle".format(IMG_SIZE), "rb"))
 
 img_size = X[0].shape
 
