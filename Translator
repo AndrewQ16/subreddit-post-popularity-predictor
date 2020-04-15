@@ -1,1 +1,15 @@
+import csv
 
+csv_file1 = r"RedditData.csv"
+csv_file2 = r"NewData.csv"
+
+in_txt = csv.reader(open(csv_file1, "rt", encoding="utf8"))
+out_csv = csv.writer(open(csv_file2, "wt"))
+out_txt = []
+
+for row in in_txt:
+    out_txt.append(["".join(a if ord(a) < 128 else '' for a in i)
+    for i in row
+    ])
+
+    out_csv.writerows(out_txt)
