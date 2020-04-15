@@ -9,7 +9,6 @@ out_txt = []
 
 for row in in_txt:
     out_txt.append(["".join(a if ord(a) < 128 else '' for a in i)
-    for i in row
-    ])
-
-    out_csv.writerows(out_txt)
+    for i in row])
+    
+out_csv.writerows(out_txt)
