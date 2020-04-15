@@ -1,3 +1,5 @@
+#This allows you to translate raw data from reddit into readable data
+
 import csv
 
 csv_file1 = r"RedditData.csv"
@@ -12,3 +14,9 @@ for row in in_txt:
     for i in row])
     
 out_csv.writerows(out_txt)
+
+#This creates the NumPy array to put into our model
+
+from numpy import genfromtxt
+
+my_data = genfromtxt('NewData.csv',delimiter=',')
