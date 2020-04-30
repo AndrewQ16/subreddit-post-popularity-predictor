@@ -21,7 +21,7 @@ def grabRedditPosts():
                          client_secret='xDvwrr2KS5oZoo51BdJCMUdFg2I',
                          user_agent='aww_data_scrape')
 
-    posts = reddit.subreddit('aww').new(limit=2000)
+    posts = reddit.subreddit('aww').new(limit=5)
 
     # print("Printing new post links:")
     # for post in posts:
@@ -40,7 +40,7 @@ def addPosts():
 
     os.chdir("data")
     for post in posts:
-        with open("RedditData.csv", 'r') as csvfile:
+        with open("UpdatedData.csv", 'r') as csvfile:
 
             # Skip any posts with an emoji in the title
             if emoji.emoji_count(post.title) > 0:
@@ -64,12 +64,13 @@ def addPosts():
                     break         
 
                 
-            if isInCsv == False:   
-                rowsToAppend.append([post.title, post.author ,post.url + ' ', "F", 0, get_date(post)])
+            if isInCsv == False:
+                print("Post id: " + str(post.id))   
+                rowsToAppend.append([post.title, post.id, post.author ,post.url + ' ', "F", 0, get_date(post)])
             
     print("Added in: {} new rows".format(len(rowsToAppend)))
                 
-    with open("RedditData.csv", "a") as csvfile:
+    with open("UpdatedData.csv", "a") as csvfile:
         csvwriter = csv.writer(csvfile)
         csvwriter.writerows(rowsToAppend)
         
