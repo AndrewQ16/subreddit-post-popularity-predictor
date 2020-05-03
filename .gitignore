@@ -41,3 +41,5 @@ Thumbs.db
 # logs and models for now
 /data/logs/*
 /models/*
+/data/animalsEN/*
+/data/RedditImages/*
