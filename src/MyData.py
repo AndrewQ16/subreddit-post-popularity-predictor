@@ -82,6 +82,8 @@ for features, label in training_data:
  
 #-1 means that is catches all features, 1 is for gray scale
 X = np.array(X).reshape(-1, IMG_SIZE, IMG_SIZE, 1)
+print("X shape:")
+print(X.shape)
 y = np.array(y)
 
 pickle_out = open("X{}.pickle".format(IMG_SIZE), "wb")
@@ -91,3 +93,4 @@ pickle_out.close()
 pickle_out = open("y{}.pickle".format(IMG_SIZE), "wb")
 pickle.dump(y, pickle_out)
 pickle_out.close()
+asdfghjkl

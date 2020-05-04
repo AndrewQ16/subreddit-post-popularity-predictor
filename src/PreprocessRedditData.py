@@ -7,6 +7,7 @@ from sklearn.utils import shuffle
 from sklearn.model_selection import train_test_split
 import pickle
 import sys
+import emoji
 
 ''' 
     If time allows it, integrate time of post into predicting the final outcome
@@ -46,7 +47,7 @@ def format_data():
     max_caption_length = 0
 
     IMG_SIZE = int(sys.argv[1])
-
+    index = 0
     with open("UpdatedData.csv", 'r') as csvfile:
         csvreader = csv.reader(csvfile)
         
@@ -57,6 +58,11 @@ def format_data():
             img_path = None
             img_array = None
             new_array = None
+
+            # Skip any posts with an emoji in the title
+            if emoji.emoji_count(row[0]) > 0:
+                continue
+
             try:
                 img_path = "RedditImages/" + row[1] + ".jpg"
                 img_array = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
@@ -72,7 +78,9 @@ def format_data():
 
             max_caption_length = max(max_caption_length, wordsCount(caption))
             
-            
+            if index % 1000 == 0:
+                print("index: {}".format(index))
+            index+=1
             
     # at this point you have the captions and images in lists
     # shuffle the data sets
@@ -90,6 +98,14 @@ def format_data():
     tokenizer.word_index['<pad>'] = 0
     tokenizer.index_word[0] = '<pad>'
 
+
+    f = open("tokenDictionary.txt", "w+")
+
+    for entry in tokenizer.word_index:
+        f.write("{}\n".format(entry))
+
+    f.close()
+
     # Create the tokenized vectors
     train_seqs = tokenizer.texts_to_sequences(train_captions)
     
@@ -104,7 +120,7 @@ def format_data():
     train_captions = np.array(cap_vector)
     
     pickle_out = open("reddit_images-{}.pickle".format(IMG_SIZE), "wb")
-    pickle.dump(img_data, pickle_out)
+    pickle.dump(train_img_data, pickle_out)
 
     pickle_out = open("reddit_captions.pickle", "wb")
     pickle.dump(train_captions, pickle_out)
